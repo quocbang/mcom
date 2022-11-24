@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package stations;
+
+enum State {
+    UNSPECIFIED = 0;
+    SHUTDOWN    = 1;
+    IDLE        = 2;
+    RUNNING     = 3;
+    MAINTENANCE = 4;
+    REPAIRING   = 5;
+    MALFUNCTION = 6;
+    DISPOSAL    = 7;
+}
+
+enum CollectQuantitySource{
+    FROM_STATION_CONFIGS = 0;
+    FROM_STATION_PARAMS  = 1;
+}
+
+enum FeedQuantitySource{
+    FROM_RECIPE     = 0;
+    USER_DEFINITION = 1;
+}

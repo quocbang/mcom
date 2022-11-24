@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package resources;
+
+enum MaterialStatus{
+    MATERIAL_STATUS_UNSPECIFIED = 0;
+    AVAILABLE                   = 1;
+    HOLD                        = 2;
+    INSPECTION                  = 3;
+    MOUNTED                     = 4;
+    UNAVAILABLE                 = 5;
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package recipes;
+
+enum StagePriority {
+	UNSPECIFIED       = 0;
+    // 試作
+	PROTOTYPE         = 1;
+	// 試產
+	TRIAL_PRODUCTION  = 2;
+	// 正式
+	NORMAL_PRODUCTION = 3;
+	// 暫定
+	RUNNING_CHANGE    = 4;
+}
+

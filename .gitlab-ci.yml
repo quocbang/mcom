@@ -1,0 +1,31 @@
+image: golang:1.18.2-alpine3.16
+services:
+  - name: postgres:14
+    alias: my_postgres
+variables:
+  POSTGRES_HOST: my_postgres
+  POSTGRES_PORT: ${POSTGRES_PORT}
+  POSTGRES_DB: ${POSTGRES_DB}
+  POSTGRES_USER: ${POSTGRES_USER}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  SSH_PRIVATE_KEY: ${SSH_PRIVATE_KEY}
+stages:
+  - test
+dm-test:
+  stage: test
+  script:
+    - export DB_ADDRESS=${POSTGRES_HOST}
+    - export DB_PORT=5432
+    - export DB_DATABASE=${POSTGRES_DB}
+    - export DB_USERNAME=${POSTGRES_USER}
+    - export DB_PASSWORD=${POSTGRES_PASSWORD}
+    - apk add --update --no-cache build-base git openssh
+    - git config --global "url.ssh://git@gitlab.kenda.com.tw:4222".insteadOf "https://gitlab.kenda.com.tw"
+    - mkdir ~/.ssh
+    - echo "${SSH_PRIVATE_KEY}" >> ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -Ht ecdsa -p 4222 gitlab.kenda.com.tw,192.1.1.159 >> ~/.ssh/known_hosts
+    - go mod download
+    - go vet ./...
+    - go test -race $(go list ./...) -v -coverprofile .testCoverage.txt
+    - go tool cover -func .testCoverage.txt

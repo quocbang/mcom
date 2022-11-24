@@ -1,0 +1,217 @@
+syntax = "proto3";
+
+package errors;
+option go_package = "gitlab.kenda.com.tw/kenda/mcom/errors";
+
+// Must advise MUI developer of any change.
+enum Code {
+    NONE = 0;
+
+    // 1xxxx for user errors
+
+    ACCOUNT_NOT_FOUND_OR_BAD_PASSWORD = 10000;
+    USER_NO_PERMISSION             = 10100;
+
+    reserved 10200; // USER_MISSING_TOKEN
+
+    USER_UNKNOWN_TOKEN           = 10300;
+    USER_ALREADY_EXISTS          = 10400;
+    ACCOUNT_ROLES_NOT_PERMIT     = 10500;
+    ACCOUNT_SAME_AS_OLD_PASSWORD = 10600;
+    ACCOUNT_BAD_OLD_PASSWORD     = 10700;
+    USER_NOT_FOUND               = 10800;
+    ACCOUNT_ALREADY_EXISTS       = 11000;
+    ACCOUNT_NOT_FOUND            = 12000;
+
+    // 13xxx for user sign in/out errors
+    PREVIOUS_USER_NOT_SIGNED_OUT = 13000;
+    USER_HAS_NOT_SIGNED_IN       = 13100;
+    STATION_OPERATOR_NOT_MATCH   = 13200;
+
+    // 2xxxx for station errors
+
+    STATION_NOT_FOUND = 20000;
+
+    // 20100 is reserved for STATION_ON_HOLD in future.
+    // STATION_ON_HOLD e.g. maintenance.
+    reserved 20100;
+
+    STATION_ALREADY_EXISTS = 20200;
+
+    STATION_PRINTER_NOT_DEFINED = 21000;
+
+    STATION_GROUP_ALREADY_EXISTS = 25100;
+    STATION_GROUP_ID_NOT_FOUND   = 25200;
+
+    STATION_SITE_NOT_FOUND             = 26000;
+    STATION_SITE_BIND_RECORD_NOT_FOUND = 26010;
+    STATION_SITE_REMAINING_OBJECTS     = 27000;
+    STATION_SITE_ALREADY_EXISTS        = 28000;
+    STATION_SITE_SUB_TYPE_MISMATCH     = 29000;
+
+    // 3xxxx for resource errors
+
+    RESOURCE_NOT_FOUND         = 30000;
+    RESOURCE_MATERIAL_SHORTAGE = 30010;
+    RESOURCE_UNAVAILABLE       = 30020;
+    RESOURCE_EXPIRED           = 30100;
+
+    // 30200 is reserved for RESOURCE_ON_HOLD in future.
+
+    // 30300 is reserved for RESOURCE_COLLECT_NOT_ALLOWED in future.
+    // RESOURCE_COLLECT_NOT_ALLOWED resource id has been used and thus not valid for
+    // new resource from Collect.
+    reserved 30200, 30300;
+
+    // 304xx for resource control errors
+
+    RESOURCE_CONTROL_ABOVE_EXTENDED_COUNT = 30401;
+
+    RESOURCE_EXISTED          = 30500;
+    RESOURCES_COUNT_MISMATCH  = 30700;
+
+    // 31xxx for resource site errors
+    RESOURCE_SITE_NOT_SHARED = 31100;
+
+    // 4xxxx for work order errors
+
+    WORKORDER_NOT_FOUND = 40000;
+
+    // WORKORDER_BAD_BATCH the batch is not allowed to be operated. e.g. CLOSED batch can
+    // not be closed.
+    WORKORDER_BAD_BATCH = 40100;
+
+    // WORKORDER_BAD_STATUS work order unexpected status, e.g: load feed work order only
+    // allowed ACTIVE status, load collect work order only allowed
+    // ACTIVE or CLOSING status.
+    WORKORDER_BAD_STATUS = 40300;
+
+    // 40400 is reserved for WorkorderUnexpectedResults in future.
+    // WorkorderUnexpectedResults work order unexpected results, e.g: requested todo work
+    // order for feeding but return zero-length todo reply.
+    reserved 40400;
+
+    // 5xxxx for carrier errors
+
+    CARRIER_NOT_FOUND = 50000;
+
+    // CARRIER_IN_USE carrier in use and cannot be shared.
+    CARRIER_IN_USE = 50100;
+
+    // 50200 is reserved for CARRIER_FULL in future.
+    // CARRIER_FULL carrier can be shared but it's full.
+    reserved  50200;
+
+    CARRIER_QUANTITY_LIMIT = 50400;
+    // 6xxxx for batch errors
+
+    BATCH_NOT_FOUND      = 60000;
+    BATCH_ALREADY_EXISTS = 60200;
+
+    // BATCH_NOT_READY e.g. not enough fed batch to collect.
+    BATCH_NOT_READY = 60100;
+
+    // 7xxxx for department errors
+
+    DEPARTMENT_NOT_FOUND   = 70000;
+    DEPARTMENT_ALREADY_EXISTS = 70200;
+
+    // 8xxxx for production errors
+
+    PRODUCTION_PLAN_NOT_FOUND = 80000;
+    PRODUCTION_PLAN_EXISTED   = 80100;
+
+    // 81xxx for production record errors
+
+    RECORD_NOT_FOUND      = 81000;
+    RECORD_ALREADY_EXISTS = 81100;
+
+    // 9xxxx for recipe errors
+
+    RECIPE_NOT_FOUND      = 90000;
+    RECIPE_ALREADY_EXISTS = 90100;
+
+    // 91xxx for product errors
+
+    PRODUCT_ID_NOT_FOUND = 91000;
+
+    SUBSTITUTION_ALREADY_EXISTS = 91010;
+
+    // duplicated product type in limitary_hour table.
+    LIMITARY_HOUR_ALREADY_EXISTS = 91110;
+    LIMITARY_HOUR_NOT_FOUND = 91111;
+
+    // 92xxx for process errors
+
+    PROCESS_NOT_FOUND      = 92000;
+    PROCESS_ALREADY_EXISTS = 92100;
+
+    // 10xxxx for others
+
+    INSUFFICIENT_REQUEST     = 100000;
+    INVALID_NUMBER           = 100100;
+    BAD_REQUEST              = 100200;
+    PRODUCT_ID_MISMATCH      = 100300;
+    BAD_WORK_DATE            = 100400;
+    FAILED_TO_PRINT_RESOURCE = 100500;
+
+    // 101xxx for unspecified
+
+    WAREHOUSE_NOT_FOUND          = 101000;
+
+    // 12xxxx for the compound error of users & stations
+
+    // USER_STATION_MISMATCH the user is not the station/site operator.
+    USER_STATION_MISMATCH = 120100;
+
+    // 120300 is reserved for USER_STATION_SIGN_ON_FORBIDDEN in future.
+    // USER_STATION_SIGN_ON_FORBIDDEN e.g. not qualified/registered to operate the station.
+    reserved 120300;
+
+    // 23xxxx for the compound error of stations & resources
+
+    // 230100 is reserved for STATION_RESOURCE_RESOURCE_IN_USE in future.
+    // STATION_RESOURCE_RESOURCE_IN_USE the resource is bound to another
+    // station/site provided in details.
+
+    reserved 230100;
+
+    // 24xxxx for the compound error of stations & work orders
+
+    // STATION_WORKORDER_MISMATCH the work order is not being executed the station
+    STATION_WORKORDER_MISMATCH = 240100;
+
+    // 34xxxx for the compound error of resources & work orders
+
+    // 340100 is reserved for RESOURCE_WORKORDER_RESOURCE_NOT_READY in future.
+    // RESOURCE_WORKORDER_RESOURCE_NOT_READY the resource is required pre-process,
+    // e.g. cutting.
+    reserved 340100;
+
+    // RESOURCE_WORKORDER_QUANTITY_BELOW_MIN the used quantity is less than the minimum
+    // quantity in the recipe.
+    RESOURCE_WORKORDER_QUANTITY_BELOW_MIN = 340201;
+
+    // RESOURCE_WORKORDER_QUANTITY_ABOVE_MAX the used quantity is greater than the
+    // maximum quantity in the recipe.
+    RESOURCE_WORKORDER_QUANTITY_ABOVE_MAX = 340202;
+
+    // 340203 is reserved for RESOURCE_WORKORDER_QUANTITY_LOW_DOSAGE in future.
+    // RESOURCE_WORKORDER_QUANTITY_LOW_DOSAGE the used quantity is less than the dosage.
+
+    // 340204 is reserved for RESOURCE_WORKORDER_QUANTITY_SHORTAGE in future.
+    // RESOURCE_WORKORDER_QUANTITY_SHORTAGE the quantity of the stock is less than the
+    // specified quantity, e.g. used quantity, the minimum quantity in the recipe.
+
+    reserved 340203, 340204;
+
+    // RESOURCE_WORKORDER_BAD_GRADE required specified grade but got others.
+    RESOURCE_WORKORDER_BAD_GRADE = 340301;
+
+    RESOURCE_WORKORDER_RESOURCE_UNEXPECTED = 340400;
+
+    // RESOURCE_WORKORDER_RESOURCE_MISSING the resource is required but missing.
+    RESOURCE_WORKORDER_RESOURCE_MISSING = 340500;
+
+    BLOB_ALREADY_EXIST = 341000;
+}

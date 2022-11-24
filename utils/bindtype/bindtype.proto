@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package bindtype;
+
+enum BindType {
+    RESOURCE_BINDING_NONE                      = 0;  // not binding any resource
+
+    // add to a non-discrete resource site, e.g., oil tank
+
+    // bind or replace existing
+    RESOURCE_BINDING_CONTAINER_BIND            = 1001;  
+    RESOURCE_BINDING_CONTAINER_ADD             = 1002;
+    RESOURCE_BINDING_CONTAINER_CLEAR           = 1010;
+    RESOURCE_BINDING_CONTAINER_CLEAN_DEVIATION = 1011;
+
+    // bind to a 1-1 resource site
+
+    // bind or replace existing
+    RESOURCE_BINDING_SLOT_BIND                 = 1101;  
+    RESOURCE_BINDING_SLOT_CLEAR                = 1110;
+
+    // insert into or remove from a resource collection site
+
+    // bind or replace existing
+    RESOURCE_BINDING_COLLECTION_BIND           = 1201;  
+    RESOURCE_BINDING_COLLECTION_ADD            = 1202;
+    RESOURCE_BINDING_COLLECTION_CLEAR          = 1210;
+
+    // queue for a one-at-a-time resource site
+    
+    // bind or replace an element of the queue
+    RESOURCE_BINDING_QUEUE_BIND                = 2101;  
+    // clear the resources bound to an element of the queue
+    RESOURCE_BINDING_QUEUE_CLEAR               = 2110;  
+    // add new member to the tail of the queue
+    RESOURCE_BINDING_QUEUE_PUSH                = 2121;  
+    // add new member to the tail while removing the head member
+    RESOURCE_BINDING_QUEUE_PUSHPOP             = 2122;  
+    // remove the head member of the queue
+    RESOURCE_BINDING_QUEUE_POP                 = 2123;  
+    // remove a member of the queue
+    // 
+    // an empty slot will be left after the object is removed
+    RESOURCE_BINDING_QUEUE_REMOVE              = 2124;  
+    
+
+    // collection pipeline
+
+    // bind or replace an element of the queue
+    RESOURCE_BINDING_COLQUEUE_BIND             = 2201;  
+    // add to an element of the queue
+    RESOURCE_BINDING_COLQUEUE_ADD              = 2202;  
+    // clear the resources bound to an element of the queue
+    RESOURCE_BINDING_COLQUEUE_CLEAR            = 2210;  
+    // add new member to the tail of the queue
+    RESOURCE_BINDING_COLQUEUE_PUSH             = 2221;  
+    // add new member to the tail while removing the head member
+    RESOURCE_BINDING_COLQUEUE_PUSHPOP          = 2222;  
+    // remove the head member of the queue
+    RESOURCE_BINDING_COLQUEUE_POP              = 2223;  
+    // remove a member of the queue
+    //
+    // an empty collection will be left after the object is removed
+    RESOURCE_BINDING_COLQUEUE_REMOVE           = 2224;  
+
+}
+

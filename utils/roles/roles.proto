@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package roles;
+
+enum Role {
+    ROLE_UNSPECIFIED = 0;
+    // 系統管理員
+    ADMINISTRATOR = 1;
+    // 主管
+    LEADER = 2;
+    // 排產人員
+    PLANNER = 3;
+    // 派工人員
+    SCHEDULER = 4;
+    // 快檢人員
+    INSPECTOR = 5;
+    // 品管人員
+    QUALITY_CONTROLLER = 6;
+    // 作業人員
+    OPERATOR = 7;
+    // 搬運人員
+    BEARER = 8;
+}

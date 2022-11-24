@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package workorder;
+
+enum Abnormality {
+    ABNORMALITY_UNSPECIFIED = 0;
+    NONE                    = 1;
+    PLAN_MUTATION           = 2;
+    WRONG_RESOURCE          = 3;
+    STATION_MALFUNCTIONS    = 4;
+    OTHERS                  = 5;
+}
+
+enum BatchSize {
+    PER_BATCH_QUANTITIES = 0;
+    FIXED_QUANTITY     = 1;
+    PLAN_QUANTITY      = 2;
+}
